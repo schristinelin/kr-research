@@ -16,21 +16,23 @@ def api_request(target, species):
 
     return df
 
-# implement the above function using example query
-df = api_request('nicotine', 'homo sapiens')
+# implement the above function to get input data
+target_list = ['nicotine', 'breast cancer', 'lung cancer']
+specie_name = 'homo sapiens'
+full_df = pd.DataFrame()
+for target in target_list:
+    df = api_request(target, specie_name)
+    full_df[target] = df['name']
+
 
 # simple example of tokenizing 'name' variable
+## to-do: combine with the above loop
 from nltk.tokenize import word_tokenize
+df_tokenized = pd.DataFrame()
+for target in target_list:
+    df_tokenized[target] = full_df[target].apply(word_tokenize)
+#df['tokenized_nicotine'] = df['name'].apply(word_tokenize)
 
-
-# example of another pathway
-df_bc = api_request('breast cancer', 'homo sapiens')
-
-# tokenize df (nicotine dataframe), and df_bc (breast cancer)
-df['tokenized_nicotine'] = df['name'].apply(word_tokenize)
-df_bc['tokenized_breastcancer'] = df_bc['name'].apply(word_tokenize)
-
+print(df_tokenized)
 # merge onto one dataframe for view
-df_merged = pd.concat([df['tokenized_nicotine'], df_bc['tokenized_breastcancer']], axis = 1)
-
-print(df_merged)
+#df_merged = pd.concat([df['tokenized_nicotine'], df_bc['tokenized_breastcancer']], axis = 1)
